@@ -1,0 +1,15 @@
+# Detalhes requisição de estágio
+
+loc_analyze_coordinator = "xpath://span[contains(text(),'Análise coordenador')]"
+loc_confirm_request = "xpath://span[contains(text(),'Confirmar')]"
+loc_stage_history  = "xpath://span[contains(text(),'Etapa foi modificada de Setor de estágio para Coordenador')]"
+loc_stage_history_coordinator_to_director  = "xpath://span[contains(text(),'Etapa foi modificada de Coordenador para Diretor')]"
+loc_sucess_msg =  "xpath://div[contains(text(),'Etapa da solicitação foi alterada com sucesso.')]"
+loc_director_signature = "xpath://span[contains(text(),'Assinatura Diretor')]"
+loc_defer_button = "xpath://span[contains(text(),'Deferir')]"
+loc_attach_docs_button = "xpath://span[contains(text(),'Anexar documentos')]"
+loc_choose_document = "id:avatar"
+loc_save_document = "xpath://span[contains(text(),'Salvar documento')]"
+loc_docs_sucess_msg =  "xpath://div[contains(text(),'Documentos enviados com sucesso!')]"
+loc_logout = "css:.logout"
+loc_upload_doc_msg =  "xpath://div[contains(text(),'Arquivo adicionado a lista para upload')]"
