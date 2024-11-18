@@ -16,3 +16,6 @@ loc_step3_details_request = "xpath://div[@class='step']/span[contains(text(),'As
 loc_step4_details_request = "xpath://div[@class='step']/span[contains(text(),'Assinatura Diretor')]"
 loc_step5_details_request = "xpath://div[@class='step']/span[contains(text(),'Processo de assinatura Finalizado')]"
 loc_completed_details_request = "xpath://div[@class='etapa']/span[contains(text(),'Concluído')]"
+loc_status_processing_request = "xpath://span[text()='Processando']"
+loc_logout = "css:.logout"
+

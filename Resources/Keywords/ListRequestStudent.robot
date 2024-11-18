@@ -2,6 +2,7 @@
 
 
 Variables   ../Locators/ListRequestStudent.py
+Variables   ../Locators/Commom.py
 Variables    ../TestData/Testdata.py
 Library    SeleniumLibrary
 
@@ -21,11 +22,11 @@ Valido se a nova solicitação de estágio "${TYPE_INTERNSHIP}" foi registrada c
     Capture Page Screenshot
 
 Valido se a solicitação de estágio consta como aprovada
-    ${status_request}=   Run Keyword And Return Status  Element Should Not Be Visible   ${loc_send_report_button}
+    ${status_request}=   Run Keyword And Return Status  Element Should Be Visible   ${loc_status_processing_request}
     WHILE  ${status_request}    limit=15
-        Sleep  3
+        Sleep  15
         Reload Page
-        ${status_request}=   Run Keyword And Return Status  Element Should Not Be Visible   ${loc_send_report_button}
+        ${status_request}=   Run Keyword And Return Status  Element Should Be Visible   ${loc_status_processing_request}
     END    
     Wait Until Element Is Visible   ${loc_status_approved_request}  10
     Element Should Contain     ${loc_status_approved_request}      Aprovado
@@ -42,6 +43,10 @@ Valido se a solicitação de estágio consta como aprovada
     Element Should Be Visible   ${loc_step5_details_request}
     Element Should Be Visible   ${loc_completed_details_request}
     Capture Page Screenshot
+
+Realizo logout do sistema
+    Click Element  ${loc_logout}
+    Wait Until Element Is Visible   ${loc_email_field}
 
 
 

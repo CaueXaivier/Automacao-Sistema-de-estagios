@@ -73,7 +73,7 @@ Valido as informações e como "${DEFERMENT_USER}" defiro a solicitação de est
         Page Should Contain Element      ${loc_stage_history_coordinator_to_director}
         Capture Page Screenshot
     ELSE
-        Wait Until Element Is Visible    ${loc_defer_button}
+        Wait Until Element Is Visible    ${loc_defer_button}   10
         Execute Javascript    window.scrollBy(0, 700)
         Click Element   ${loc_defer_button}
         Click Element   ${loc_confirm_request}
@@ -81,4 +81,13 @@ Valido as informações e como "${DEFERMENT_USER}" defiro a solicitação de est
         Wait Until Element Is Not Visible   ${loc_defer_button}   10
         Click Element   ${loc_logout}        
     END
+
+Clico em indeferir
+    Execute Javascript    window.scrollBy(0, 800)
+    Wait Until Element Is Visible    ${loc_reject_button}   10
+    Click Element  ${loc_reject_button}
+    Input Text   ${loc_reason_reject_input}   ${REASON_REJECT_TEXT}
+    Click Element   ${loc_confirm_button}
+
+
 

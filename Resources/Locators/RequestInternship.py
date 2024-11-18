@@ -22,3 +22,5 @@ loc_other_documents = "css:.mat-mdc-tooltip-trigger.fileInput"
 loc_send_request = "css:.botao"
 loc_observation_student = "css:.observacaoAluno"
 loc_confirm_request = "css:.mdc-button__label"
+
+
