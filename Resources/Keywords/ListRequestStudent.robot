@@ -48,6 +48,68 @@ Realizo logout do sistema
     Click Element  ${loc_logout}
     Wait Until Element Is Visible   ${loc_email_field}
 
+Valido se a solicitação de estágio consta como finalizada
+    Wait Until Element Is Visible   ${loc_status_finished_report}  10
+    Element Should Contain     ${loc_status_finished_report}      Finalizado
+    Page Should Not Contain   ${loc_send_report_button}
+    Page Should Contain Element   ${loc_download_docs_button}
+    Capture Page Screenshot
+    Click Element   ${loc_details_report}
+    Wait Until Element Is Visible   ${loc_finished_details_request}  10
+    Element Should Contain     ${loc_finished_details_request}      Finalizado
+    Element Should Be Visible   ${loc_step1_details_request}
+    Element Should Be Visible  ${loc_step2_details_request}
+    Element Should Be Visible   ${loc_step3_details_request}
+    Element Should Be Visible   ${loc_step4_details_request}
+    Element Should Be Visible   ${loc_step5_details_request}
+    Capture Page Screenshot
+
+Valido se a solicitação de renovação consta como aprovada
+    ${status_request}=   Run Keyword And Return Status  Element Should Be Visible   ${loc_status_processing_request}
+    WHILE  ${status_request}    limit=15
+        Sleep  15
+        Reload Page
+        ${status_request}=   Run Keyword And Return Status  Element Should Be Visible   ${loc_status_processing_request}
+    END    
+    Wait Until Element Is Visible   ${loc_status_approved_renewal}  10
+    Element Should Contain     ${loc_status_approved_renewal}      Aprovado
+    Page Should Contain Element   ${loc_send_report_button}
+    Page Should Contain Element   ${loc_download_docs_button}
+    Capture Page Screenshot
+    Click Element   ${loc_details_renewal}
+    Wait Until Element Is Visible   ${loc_approved_details_request}  10
+    Element Should Contain     ${loc_approved_details_request}      Aprovado
+    Element Should Be Visible   ${loc_step1_details_request}
+    Element Should Be Visible  ${loc_step2_details_request}
+    Element Should Be Visible   ${loc_step3_details_request}
+    Element Should Be Visible   ${loc_step4_details_request}
+    Element Should Be Visible   ${loc_step5_details_request}
+    Element Should Be Visible   ${loc_completed_details_request}
+    Capture Page Screenshot
+
+Valido se a solicitação de aproveitamento consta como aprovada 
+   ${status_request}=   Run Keyword And Return Status  Element Should Be Visible   ${loc_status_processing_request}
+    WHILE  ${status_request}    limit=15
+        Sleep  15
+        Reload Page
+        ${status_request}=   Run Keyword And Return Status  Element Should Be Visible   ${loc_status_processing_request}
+    END 
+    Wait Until Element Is Visible   ${loc_status_approved_credit}  10
+    Element Should Contain     ${loc_status_approved_credit}      Aprovado
+    Page Should Contain Element   ${loc_send_report_button}
+    Page Should Contain Element   ${loc_download_docs_button}
+    Capture Page Screenshot
+    Click Element   ${loc_details_credit }
+    Wait Until Element Is Visible   ${loc_approved_details_request}  10
+    Element Should Contain     ${loc_approved_details_request}      Aprovado
+    Element Should Be Visible   ${loc_step1_details_request}
+    Element Should Be Visible  ${loc_step2_details_request}
+    Element Should Be Visible   ${loc_step3_details_request}
+    Element Should Be Visible   ${loc_step4_details_request}
+    Element Should Be Visible   ${loc_step5_details_request}
+    Element Should Be Visible   ${loc_completed_details_request}
+    Capture Page Screenshot
+
 
 
 

@@ -18,3 +18,8 @@ loc_header_courses = "xpath://a[text()='Cursos']"
 loc_status__reject_request = "css:.retangulo.statusColor3"
 loc_status_reject_text = "xpath://span[text()='Indeferido']"
 loc_filter_reject_radio = "xpath://label[text()='Indeferidas']" #"xpath://input[@value='indeferidas']"
+loc_list_requests_report = "xpath://div[@class='dataCard']/h2[contains(text(),'Relatórios')]"
+loc_list_requests_renewals = "xpath://div[@class='dataCard']/h2[contains(text(),'Renovações')]"
+loc_list_requests_cancellation = "xpath://div[@class='dataCard']/h2[contains(text(),'Cancelamentos')]"
+loc_filter_analysis_radio = "xpath://label[text()='Em análise']"
+ 

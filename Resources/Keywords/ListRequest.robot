@@ -44,6 +44,7 @@ Clico em analisar
 Valido se a lista de solicitações é corretamente carregada
     Click Element   ${loc_filter_name}
     Input Text   ${loc_filter_name}     ${NAME_STUDENT}
+    Click Element   ${loc_filter_btn}
     ${type_intertnship}=  Get Text  ${loc_type_intertnship_request}
     ${TYPE_INTERNSHIP}=  Set Suite Variable  ${type_intertnship}
     ${name_student}=  Get Text  ${loc_name_student_request}
@@ -85,6 +86,23 @@ Valido se a solicitação de estágio consta como indeferida
     Should Contain    ${loc_status_reject_text}    Indeferido
     Capture Page Screenshot
     
+Clico em ir para solicitações de relatório
+    Wait Until Element Is Visible   ${loc_list_requests_report}
+    Click Element   ${loc_list_requests_report}
+    Wait Until Element Is Visible    ${loc_type_intertnship_request}   45
+
+Clico em ir para solicitações de renovação
+    Wait Until Element Is Visible   ${loc_list_requests_renewals}
+    Click Element   ${loc_list_requests_renewals}
+    Wait Until Element Is Visible    ${loc_type_intertnship_request}   45
+
+Clico em ir para solicitações de cancelamento
+    Wait Until Element Is Visible   ${loc_list_requests_cancellation}
+    Click Element   ${loc_list_requests_cancellation}
+    Wait Until Element Is Visible    ${loc_type_intertnship_request}   45
+
+
+
 
 
     

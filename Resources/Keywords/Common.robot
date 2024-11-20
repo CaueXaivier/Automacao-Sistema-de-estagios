@@ -29,6 +29,23 @@ ${ROUTE_INSERT_SERVER}  insert_server
 ${ROUTE_ID_STUDENT}    id_student
 ${ROUTE_INSERT_STUDENT_USER}  insert_student_user
 ${ROUTE_INSERT_STUDENT}  insert_student
+${ROUTE_ID_REQUEST_APPROVED}   id_request_approved
+${ROUTE_UPDATE_REQUEST_APPROVED}   update_request_approved
+${ROUTE_ID_REQUEST_FINISHED}   id_request_finished
+${ROUTE_ID_REQUEST_RENEWAL_COORDINATOR}   id_request_renewal_coordinator
+${ROUTE_UPDATE_REQUEST_RENEWAL_COORDINATOR}   update_request_renewal_coordinator
+${ROUTE_ID_REQUEST_RENEWAL_DIRECTOR}   id_request_renewal_director
+${ROUTE_UPDATE_REQUEST_RENEWAL_DIRECTOR}   update_request_renewal_director
+${ROUTE_ID_REQUEST_RENEWAL_APPROVED}  id_request_renewal_approved
+${ROUTE_ID_REQUEST_APPROVED_NO_REPORT_DELIVERED}   id_request_approved_no_report_delivered
+${ROUTE_UPDATE_REQUEST_CANCELLATION_COORDINATOR}   update_request_cancellation_coordinator
+${ROUTE_UPDATE_REQUEST_CANCELLATION_DIRECTOR}   update_request_cancellation_director
+${ROUTE_ID_REQUEST_CANCELLED}   id_request_cancelled
+${ROUTE_ID_REQUEST_CREDIT}   id_request_credit
+${ROUTE_ID_REQUEST_CREDIT_APPROVED}   id_request_credit_approved
+${ROUTE_ID_REQUEST_APPROVED_NOT_REPORT}   id_request_approved_not_report
+${ROUTE_ID_REQUEST_NOT_MANDATORY_APPROVED}  id_request_not_mandatory_approved
+${ROUTE_ID_REQUEST_NOT_MANDATORY_ANALYSIS_DIRECTOR}   id_request_not_mandatory_analysis_director
 ${ENROLL_STUDENT}  2019005300
 ${ROLES_ID_SERVER} =  3
 ${ROLES_ID_STUDENT} =  1
@@ -273,25 +290,25 @@ Verifico se existe curso inativo
         END
     END
 
-Insiro uma nova solicitação de estágio
-    ${PAYLOAD}         Create Dictionary       email=${USER_STUDENT}  senha=${USER_PASSWORD}    
-    Create Session  alias= REALIZA LOGIN   url=${HOST}
-    ${response}   POST On Session    alias= REALIZA LOGIN   url=/${ROUTE_LOGIN}    json=${PAYLOAD}
-    Should Be Equal As Numbers    ${response.status_code}    200
-    ${TOKEN}=     Set Variable  ${response.text}   
-    ${TOKEN}=  Fetch From Right   ${TOKEN}  :
-    ${TOKEN}=  Remove String   ${TOKEN}  "    
-    ${TOKEN}=  Remove String   ${TOKEN}  ]
-    ${TOKEN}=  Remove String   ${TOKEN}  }
-    ${TOKEN}=  Remove String   ${TOKEN}  \n
-    ${TOKEN}=  Strip String   ${TOKEN}    
-    ${headers}=    Create Dictionary    Authorization=Bearer ${TOKEN}
+# Insiro uma nova solicitação de estágio
+#     ${PAYLOAD}         Create Dictionary       email=${USER_STUDENT}  senha=${USER_PASSWORD}    
+#     Create Session  alias= REALIZA LOGIN   url=${HOST}
+#     ${response}   POST On Session    alias= REALIZA LOGIN   url=/${ROUTE_LOGIN}    json=${PAYLOAD}
+#     Should Be Equal As Numbers    ${response.status_code}    200
+#     ${TOKEN}=     Set Variable  ${response.text}   
+#     ${TOKEN}=  Fetch From Right   ${TOKEN}  :
+#     ${TOKEN}=  Remove String   ${TOKEN}  "    
+#     ${TOKEN}=  Remove String   ${TOKEN}  ]
+#     ${TOKEN}=  Remove String   ${TOKEN}  }
+#     ${TOKEN}=  Remove String   ${TOKEN}  \n
+#     ${TOKEN}=  Strip String   ${TOKEN}    
+#     ${headers}=    Create Dictionary    Authorization=Bearer ${TOKEN}
     
-    #Create Dictionary       agente=${AGENT}  cancelamento=${CANCELLATION}  carga_horaria=${WORKLOAD}  contato_empresa=${CONTACT_ENTERPRISE}   data_solicitacao=${DATE_INTERNSHIP}   e_privada=${E_PRIVATE}    editavel=${EDITABLE}    etapa=${STAGE}     final_data_estagio=${DATE_INTERNSHIP}    inicio_data_estagio=${DATE_INTERNSHIP}   nome_empresa=${NAME_ENTERPRISE}   observacao=${OBSERVATION}   relatorio_entregue=${REPORT_DELIVERED}  resposta=${RESPONSE_REQUEST}  salario=${SALARY}    status=${STATUS}  status_etapa_coordenador=${STAGE_STATUS_COORDINATOR}   status_etapa_diretor=${STAGE_STATUS_DIRECTOR}    status_setor_estagio=${STAGE_STATUS_SERVER}    tipo=${TYPE}   turno_estagio=${INTERNSHIP_SHIFT}    aluno_id=${ID_STUDENT}     curso_id=${ID_COURSE}   
-    Create Session  alias= Inserir solicitação de estágio    url=${HOST}
-    Log To Console   ${PAYLOAD_INSERT_REQUEST}
-    ${response}   POST On Session  alias= Inserir solicitação de estágio   url=/${ROUTE_INSERT_REQUEST}  json=${PAYLOAD_INSERT_REQUEST}  expected_status=200
-    Log   ${response.text}
+#     #Create Dictionary       agente=${AGENT}  cancelamento=${CANCELLATION}  carga_horaria=${WORKLOAD}  contato_empresa=${CONTACT_ENTERPRISE}   data_solicitacao=${DATE_INTERNSHIP}   e_privada=${E_PRIVATE}    editavel=${EDITABLE}    etapa=${STAGE}     final_data_estagio=${DATE_INTERNSHIP}    inicio_data_estagio=${DATE_INTERNSHIP}   nome_empresa=${NAME_ENTERPRISE}   observacao=${OBSERVATION}   relatorio_entregue=${REPORT_DELIVERED}  resposta=${RESPONSE_REQUEST}  salario=${SALARY}    status=${STATUS}  status_etapa_coordenador=${STAGE_STATUS_COORDINATOR}   status_etapa_diretor=${STAGE_STATUS_DIRECTOR}    status_setor_estagio=${STAGE_STATUS_SERVER}    tipo=${TYPE}   turno_estagio=${INTERNSHIP_SHIFT}    aluno_id=${ID_STUDENT}     curso_id=${ID_COURSE}   
+#     Create Session  alias= Inserir solicitação de estágio    url=${HOST}
+#     Log To Console   ${PAYLOAD_INSERT_REQUEST}
+#     ${response}   POST On Session  alias= Inserir solicitação de estágio   url=/${ROUTE_INSERT_REQUEST}  json=${PAYLOAD_INSERT_REQUEST}  expected_status=200
+#     Log   ${response.text}
 
 Verifico se o servidor está cadastrado
 
@@ -375,3 +392,538 @@ Verifico se o aluno está cadastrado
     ELSE
         Log  ${response.text}
     END
+
+Verifico o status da requisição de estágio
+
+    ${PAYLOAD}         Create Dictionary       email=${USER_STUDENT}  senha=${USER_PASSWORD}    
+    Create Session  alias= REALIZA LOGIN   url=${HOST}
+    ${response}   POST On Session    alias= REALIZA LOGIN   url=/${ROUTE_LOGIN}    json=${PAYLOAD}
+    Should Be Equal As Numbers    ${response.status_code}    200
+    ${TOKEN}=     Set Variable  ${response.text}   
+    ${TOKEN}=  Fetch From Right   ${TOKEN}  :
+    ${TOKEN}=  Remove String   ${TOKEN}  "    
+    ${TOKEN}=  Remove String   ${TOKEN}  ]
+    ${TOKEN}=  Remove String   ${TOKEN}  }
+    ${TOKEN}=  Remove String   ${TOKEN}  \n
+    ${TOKEN}=  Strip String   ${TOKEN}    
+    ${headers}=    Create Dictionary    Authorization=Bearer ${TOKEN}
+
+    Create Session  alias= Verifica se existe requisição finalizada  url=${HOST}
+    ${response}   GET On Session  alias= Verifica se existe requisição finalizada   url=/${ROUTE_ID_REQUEST_APPROVED}/${ENROLL_STUDENT}  headers=${headers}  expected_status=200
+    ${result}=   Run Keyword And Return Status  Should Contain  ${response.text}    ${ENROLL_STUDENT}
+    IF   ${result}
+        Create Session  alias= Inserir solicitação de estágio finalizada   url=${HOST}
+        ${response}   POST On Session  alias= Inserir solicitação de estágio finalizada    url=/${ROUTE_INSERT_REQUEST}  json=${PAYLOAD_INSERT_REQUEST_ANALYSIS}  expected_status=200
+        Log   ${response.text}
+    ELSE
+        ${REQUEST_ID}=  Set Variable  ${response.text}   
+        ${REQUEST_ID}=  Fetch From Right   ${REQUEST_ID}  :
+        ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  "    
+        ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  ]
+        ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  }
+        ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  \n
+        ${REQUEST_ID}=  Strip String   ${REQUEST_ID}
+
+        Create Session  alias= Altera status da solicitação de estágio para Em análise   url=${HOST}
+            ${response}   PUT On Session   alias= Altera status da solicitação de estágio para Em análise   url=/${ROUTE_UPDATE_REQUEST_APPROVED}/${REQUEST_ID}   headers=${headers}   expected_status=200
+            ${result}=   Run Keyword And Return Status  Should Contain  ${response.text}    ${REQUEST_ID} 
+            IF   ${result}
+                Log  ${response.text} 
+            ELSE
+                Log  ${response.text}    
+            END
+        
+    END
+
+Executo a higienização do bando de dados excluindo a requisição finalizada
+    ${PAYLOAD}         Create Dictionary       email=${USER_STUDENT}  senha=${USER_PASSWORD}
+    
+    Create Session  alias= REALIZA LOGIN   url=${HOST}
+    ${response}   POST On Session    alias= REALIZA LOGIN   url=/${ROUTE_LOGIN}    json=${PAYLOAD}
+    Should Be Equal As Numbers    ${response.status_code}    200
+    ${TOKEN}=     Set Variable  ${response.text}   
+    ${TOKEN}=  Fetch From Right   ${TOKEN}  :
+    ${TOKEN}=  Remove String   ${TOKEN}  "    
+    ${TOKEN}=  Remove String   ${TOKEN}  ]
+    ${TOKEN}=  Remove String   ${TOKEN}  }
+    ${TOKEN}=  Remove String   ${TOKEN}  \n
+    ${TOKEN}=  Strip String   ${TOKEN}
+    
+    ${enroll_student}=  Set Variable   ${ENROLL_STUDENT}
+    ${headers}=    Create Dictionary    Authorization=Bearer ${TOKEN}
+    Create Session  alias= PEGA ID REQUISIÇÃO   url=${HOST}
+    ${response}   GET On Session  alias= PEGA ID REQUISIÇÃO   url=/${ROUTE_ID_REQUEST_FINISHED}/${ENROLL_STUDENT}  headers=${headers}  expected_status=200
+    ${result}=   Run Keyword And Return Status  Should Contain  ${response.text}    ${enroll_student}
+    IF   ${result}
+        Log  Não foi localizada nenhuma requisição de estágio
+    ELSE
+        ${REQUEST_ID}=  Set Variable  ${response.text}   
+        ${REQUEST_ID}=  Fetch From Right   ${REQUEST_ID}  :
+        ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  "    
+        ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  ]
+        ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  }
+        ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  \n
+        ${REQUEST_ID}=  Strip String   ${REQUEST_ID}
+        
+        Create Session  alias= DELETA DOCUMENTOS   url=${HOST}
+        ${response}   DELETE On Session   alias= DELETA DOCUMENTOS   url=/${ROUTE_DELETE_DOCS}/${REQUEST_ID}   headers=${headers}   expected_status=200
+        Log  ${response.text}
+
+        Create Session  alias= DELETA HISTÓRICO DA SOLICITAÇÃO   url=${HOST}
+        ${response}   DELETE On Session   alias= DELETA HISTÓRICO DA SOLICITAÇÃO   url=/${ROUTE_DELETE_HISTORY_REQUEST}/${REQUEST_ID}  headers=${headers}  expected_status=200
+        Log  ${response.text}
+
+        Create Session  alias= DELETA REGISTRO TABELA ESTAGIARIOS  url=${HOST}
+        ${response}   DELETE On Session   alias= DELETA REGISTRO TABELA ESTAGIARIOS   url=/${ROUTE_DELETE_INTERNS}/${REQUEST_ID}  headers=${headers}  expected_status=200
+        Log  ${response.text}
+
+        Create Session  alias= DELETA SOLICITAÇÃO DE ESTAGIO  url=${HOST}
+        ${response}   DELETE On Session   alias= DELETA SOLICITAÇÃO DE ESTAGIO   url=/${ROUTE_DELETE_REQUEST}/${REQUEST_ID}  headers=${headers}  expected_status=200
+        Log  ${response.text}
+
+    END
+
+Verifico o status da requisição de renovação para "${DEFERMENT_USER}"
+    ${coordinator_deferral}=   Run Keyword And Return Status  Should Be Equal     ${DEFERMENT_USER}    coordenador
+
+    ${PAYLOAD}         Create Dictionary       email=${USER_STUDENT}  senha=${USER_PASSWORD}    
+    Create Session  alias= REALIZA LOGIN   url=${HOST}
+    ${response}   POST On Session    alias= REALIZA LOGIN   url=/${ROUTE_LOGIN}    json=${PAYLOAD}
+    Should Be Equal As Numbers    ${response.status_code}    200
+    ${TOKEN}=     Set Variable  ${response.text}   
+    ${TOKEN}=  Fetch From Right   ${TOKEN}  :
+    ${TOKEN}=  Remove String   ${TOKEN}  "    
+    ${TOKEN}=  Remove String   ${TOKEN}  ]
+    ${TOKEN}=  Remove String   ${TOKEN}  }
+    ${TOKEN}=  Remove String   ${TOKEN}  \n
+    ${TOKEN}=  Strip String   ${TOKEN}    
+    ${headers}=    Create Dictionary    Authorization=Bearer ${TOKEN}
+    
+    IF  ${coordinator_deferral}
+        Create Session  alias= Verifica se existe requisição de renovação em análise  url=${HOST}
+        ${response}   GET On Session  alias= Verifica se existe requisição de renovação em análise  url=/${ROUTE_ID_REQUEST_RENEWAL_COORDINATOR}/${ENROLL_STUDENT}  headers=${headers}  expected_status=200
+        ${result}=   Run Keyword And Return Status  Should Contain  ${response.text}    ${ENROLL_STUDENT}
+        IF   ${result}
+            Create Session  alias= Inserir solicitação de renovação em análise   url=${HOST}
+            ${response}   POST On Session  alias= Inserir solicitação de renovação em análise    url=/${ROUTE_INSERT_REQUEST}  json=${PAYLOAD_INSERT_RENEWAL_ANALYSIS_COORDINATOR}  expected_status=200
+            Log   ${response.text}
+        ELSE
+            ${REQUEST_ID}=  Set Variable  ${response.text}   
+            ${REQUEST_ID}=  Fetch From Right   ${REQUEST_ID}  :
+            ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  "    
+            ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  ]
+            ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  }
+            ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  \n
+            ${REQUEST_ID}=  Strip String   ${REQUEST_ID}
+
+            Create Session  alias= Altera status da solicitação de renovação para Em análise   url=${HOST}
+                ${response}   PUT On Session   alias= Altera status da solicitação de renovação para Em análise   url=/${ROUTE_UPDATE_REQUEST_RENEWAL_COORDINATOR}/${REQUEST_ID}   headers=${headers}   expected_status=200
+                ${result}=   Run Keyword And Return Status  Should Contain  ${response.text}    ${REQUEST_ID} 
+                IF   ${result}
+                    Log  ${response.text} 
+                ELSE
+                    Log  ${response.text}    
+                END
+        END
+    ELSE
+        Create Session  alias= Verifica se existe requisição de renovação em análise  url=${HOST}
+        ${response}   GET On Session  alias= Verifica se existe requisição de renovação em análise  url=/${ROUTE_ID_REQUEST_RENEWAL_DIRECTOR}/${ENROLL_STUDENT}  headers=${headers}  expected_status=200
+        ${result}=   Run Keyword And Return Status  Should Contain  ${response.text}    ${ENROLL_STUDENT}
+        IF   ${result}
+            Create Session  alias= Inserir solicitação de renovação em análise   url=${HOST}
+            ${response}   POST On Session  alias= Inserir solicitação de renovação em análise    url=/${ROUTE_INSERT_REQUEST}  json=${PAYLOAD_INSERT_RENEWAL_ANALYSIS_DIRECTOR}  expected_status=200
+            Log   ${response.text}
+        ELSE
+            ${REQUEST_ID}=  Set Variable  ${response.text}   
+            ${REQUEST_ID}=  Fetch From Right   ${REQUEST_ID}  :
+            ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  "    
+            ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  ]
+            ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  }
+            ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  \n
+            ${REQUEST_ID}=  Strip String   ${REQUEST_ID}
+
+            Create Session  alias= Altera status da solicitação de renovação para Em análise   url=${HOST}
+                ${response}   PUT On Session   alias= Altera status da solicitação de renovação para Em análise   url=/${ROUTE_UPDATE_REQUEST_RENEWAL_DIRECTOR}/${REQUEST_ID}   headers=${headers}   expected_status=200
+                ${result}=   Run Keyword And Return Status  Should Contain  ${response.text}    ${REQUEST_ID} 
+                IF   ${result}
+                    Log  ${response.text} 
+                ELSE
+                    Log  ${response.text}    
+                END
+        END           
+    END
+
+Executo a higienização do bando de dados excluindo a renovação aprovada
+    ${PAYLOAD}   Create Dictionary       email=${USER_STUDENT}  senha=${USER_PASSWORD}
+    
+    Create Session  alias= REALIZA LOGIN   url=${HOST}
+    ${response}   POST On Session    alias= REALIZA LOGIN   url=/${ROUTE_LOGIN}    json=${PAYLOAD}
+    Should Be Equal As Numbers    ${response.status_code}    200
+    ${TOKEN}=     Set Variable  ${response.text}   
+    ${TOKEN}=  Fetch From Right   ${TOKEN}  :
+    ${TOKEN}=  Remove String   ${TOKEN}  "    
+    ${TOKEN}=  Remove String   ${TOKEN}  ]
+    ${TOKEN}=  Remove String   ${TOKEN}  }
+    ${TOKEN}=  Remove String   ${TOKEN}  \n
+    ${TOKEN}=  Strip String   ${TOKEN}
+    
+    ${enroll_student}=  Set Variable   ${ENROLL_STUDENT}
+    ${headers}=    Create Dictionary    Authorization=Bearer ${TOKEN}
+    Create Session  alias= PEGA ID REQUISIÇÃO   url=${HOST}
+    ${response}   GET On Session  alias= PEGA ID REQUISIÇÃO   url=/${ROUTE_ID_REQUEST_RENEWAL_APPROVED}/${ENROLL_STUDENT}  headers=${headers}  expected_status=200
+    ${result}=   Run Keyword And Return Status  Should Contain  ${response.text}    ${enroll_student}
+    IF   ${result}
+        Log  Não foi localizada nenhuma requisição de estágio
+    ELSE
+        ${REQUEST_ID}=  Set Variable  ${response.text}   
+        ${REQUEST_ID}=  Fetch From Right   ${REQUEST_ID}  :
+        ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  "    
+        ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  ]
+        ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  }
+        ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  \n
+        ${REQUEST_ID}=  Strip String   ${REQUEST_ID}
+        
+        Create Session  alias= DELETA DOCUMENTOS   url=${HOST}
+        ${response}   DELETE On Session   alias= DELETA DOCUMENTOS   url=/${ROUTE_DELETE_DOCS}/${REQUEST_ID}   headers=${headers}   expected_status=200
+        Log  ${response.text}
+
+        Create Session  alias= DELETA HISTÓRICO DA SOLICITAÇÃO   url=${HOST}
+        ${response}   DELETE On Session   alias= DELETA HISTÓRICO DA SOLICITAÇÃO   url=/${ROUTE_DELETE_HISTORY_REQUEST}/${REQUEST_ID}  headers=${headers}  expected_status=200
+        Log  ${response.text}
+
+        Create Session  alias= DELETA REGISTRO TABELA ESTAGIARIOS  url=${HOST}
+        ${response}   DELETE On Session   alias= DELETA REGISTRO TABELA ESTAGIARIOS   url=/${ROUTE_DELETE_INTERNS}/${REQUEST_ID}  headers=${headers}  expected_status=200
+        Log  ${response.text}
+
+        Create Session  alias= DELETA SOLICITAÇÃO DE ESTAGIO  url=${HOST}
+        ${response}   DELETE On Session   alias= DELETA SOLICITAÇÃO DE ESTAGIO   url=/${ROUTE_DELETE_REQUEST}/${REQUEST_ID}  headers=${headers}  expected_status=200
+        Log  ${response.text}
+
+    END
+
+Verifico se existe requisição de estágio apto para cancelamento
+    ${PAYLOAD}         Create Dictionary       email=${USER_STUDENT}  senha=${USER_PASSWORD}    
+    Create Session  alias= REALIZA LOGIN   url=${HOST}
+    ${response}   POST On Session    alias= REALIZA LOGIN   url=/${ROUTE_LOGIN}    json=${PAYLOAD}
+    Should Be Equal As Numbers    ${response.status_code}    200
+    ${TOKEN}=     Set Variable  ${response.text}   
+    ${TOKEN}=  Fetch From Right   ${TOKEN}  :
+    ${TOKEN}=  Remove String   ${TOKEN}  "    
+    ${TOKEN}=  Remove String   ${TOKEN}  ]
+    ${TOKEN}=  Remove String   ${TOKEN}  }
+    ${TOKEN}=  Remove String   ${TOKEN}  \n
+    ${TOKEN}=  Strip String   ${TOKEN}    
+    ${headers}=    Create Dictionary    Authorization=Bearer ${TOKEN}
+
+    Create Session  alias= Verifico se existe requisição de estágio apto para cancelamento  url=${HOST}
+    ${response}   GET On Session  alias= Verifico se existe requisição de estágio apto para cancelamento  url=/${ROUTE_ID_REQUEST_APPROVED_NO_REPORT_DELIVERED}/${ENROLL_STUDENT}  headers=${headers}  expected_status=200
+    Log To Console   ${response.text}
+    ${result}=   Run Keyword And Return Status  Should Contain  ${response.text}    ${ENROLL_STUDENT}
+    IF   ${result}
+        Create Session  alias= Inserir solicitação de cancelamento em análise   url=${HOST}
+        ${response}   POST On Session  alias= Inserir solicitação de cancelamento em análise    url=/${ROUTE_INSERT_REQUEST}  json=${PAYLOAD_INSERT_REQUEST_CANCELATTION_COORDINATOR}  expected_status=200
+        Log   ${response.text}
+    ELSE
+        ${REQUEST_ID}=  Set Variable  ${response.text}   
+        ${REQUEST_ID}=  Fetch From Right   ${REQUEST_ID}  :
+        ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  "    
+        ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  ]
+        ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  }
+        ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  \n
+        ${REQUEST_ID}=  Strip String   ${REQUEST_ID}
+
+        Create Session  alias= Altera status da solicitação de cancelamento para Em análise   url=${HOST}
+            ${response}   PUT On Session   alias= Altera status da solicitação de cancelamento para Em análise   url=/${ROUTE_UPDATE_REQUEST_CANCELLATION_COORDINATOR}/${REQUEST_ID}   headers=${headers}   expected_status=200
+            ${result}=   Run Keyword And Return Status  Should Contain  ${response.text}    ${REQUEST_ID} 
+            IF   ${result}
+                Log  ${response.text} 
+            ELSE
+                Log  ${response.text}    
+            END
+        
+    END
+
+Executo a higienização do bando de dados excluindo o cancelamento aprovado
+    ${PAYLOAD}   Create Dictionary       email=${USER_STUDENT}  senha=${USER_PASSWORD}
+    
+    Create Session  alias= REALIZA LOGIN   url=${HOST}
+    ${response}   POST On Session    alias= REALIZA LOGIN   url=/${ROUTE_LOGIN}    json=${PAYLOAD}
+    Should Be Equal As Numbers    ${response.status_code}    200
+    ${TOKEN}=     Set Variable  ${response.text}   
+    ${TOKEN}=  Fetch From Right   ${TOKEN}  :
+    ${TOKEN}=  Remove String   ${TOKEN}  "    
+    ${TOKEN}=  Remove String   ${TOKEN}  ]
+    ${TOKEN}=  Remove String   ${TOKEN}  }
+    ${TOKEN}=  Remove String   ${TOKEN}  \n
+    ${TOKEN}=  Strip String   ${TOKEN}
+    
+    ${enroll_student}=  Set Variable   ${ENROLL_STUDENT}
+    ${headers}=    Create Dictionary    Authorization=Bearer ${TOKEN}
+    Create Session  alias= PEGA ID REQUISIÇÃO   url=${HOST}
+    ${response}   GET On Session  alias= PEGA ID REQUISIÇÃO   url=/${ROUTE_ID_REQUEST_CANCELLED}/${ENROLL_STUDENT}  headers=${headers}  expected_status=200
+    ${result}=   Run Keyword And Return Status  Should Contain  ${response.text}    ${enroll_student}
+    IF   ${result}
+        Log  Não foi localizada nenhuma requisição de estágio
+    ELSE
+        ${REQUEST_ID}=  Set Variable  ${response.text}   
+        ${REQUEST_ID}=  Fetch From Right   ${REQUEST_ID}  :
+        ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  "    
+        ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  ]
+        ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  }
+        ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  \n
+        ${REQUEST_ID}=  Strip String   ${REQUEST_ID}
+        
+        Create Session  alias= DELETA DOCUMENTOS   url=${HOST}
+        ${response}   DELETE On Session   alias= DELETA DOCUMENTOS   url=/${ROUTE_DELETE_DOCS}/${REQUEST_ID}   headers=${headers}   expected_status=200
+        Log  ${response.text}
+
+        Create Session  alias= DELETA HISTÓRICO DA SOLICITAÇÃO   url=${HOST}
+        ${response}   DELETE On Session   alias= DELETA HISTÓRICO DA SOLICITAÇÃO   url=/${ROUTE_DELETE_HISTORY_REQUEST}/${REQUEST_ID}  headers=${headers}  expected_status=200
+        Log  ${response.text}
+
+        Create Session  alias= DELETA REGISTRO TABELA ESTAGIARIOS  url=${HOST}
+        ${response}   DELETE On Session   alias= DELETA REGISTRO TABELA ESTAGIARIOS   url=/${ROUTE_DELETE_INTERNS}/${REQUEST_ID}  headers=${headers}  expected_status=200
+        Log  ${response.text}
+
+        Create Session  alias= DELETA SOLICITAÇÃO DE ESTAGIO  url=${HOST}
+        ${response}   DELETE On Session   alias= DELETA SOLICITAÇÃO DE ESTAGIO   url=/${ROUTE_DELETE_REQUEST}/${REQUEST_ID}  headers=${headers}  expected_status=200
+        Log  ${response.text}
+
+    END
+
+Verifico se existe solicitação de aproveitamento
+    ${PAYLOAD}         Create Dictionary       email=${USER_STUDENT}  senha=${USER_PASSWORD}    
+    Create Session  alias= REALIZA LOGIN   url=${HOST}
+    ${response}   POST On Session    alias= REALIZA LOGIN   url=/${ROUTE_LOGIN}    json=${PAYLOAD}
+    Should Be Equal As Numbers    ${response.status_code}    200
+    ${TOKEN}=     Set Variable  ${response.text}   
+    ${TOKEN}=  Fetch From Right   ${TOKEN}  :
+    ${TOKEN}=  Remove String   ${TOKEN}  "    
+    ${TOKEN}=  Remove String   ${TOKEN}  ]
+    ${TOKEN}=  Remove String   ${TOKEN}  }
+    ${TOKEN}=  Remove String   ${TOKEN}  \n
+    ${TOKEN}=  Strip String   ${TOKEN}    
+    ${headers}=    Create Dictionary    Authorization=Bearer ${TOKEN}
+
+    Create Session  alias= Verifico se existe requisição de aproveitamento  url=${HOST}
+    ${response}   GET On Session  alias= Verifico se existe requisição de aproveitamento  url=/${ROUTE_ID_REQUEST_CREDIT}/${ENROLL_STUDENT}  headers=${headers}  expected_status=200
+    Log To Console   ${response.text}
+    ${result}=   Run Keyword And Return Status  Should Contain  ${response.text}    ${ENROLL_STUDENT}
+    IF   ${result}
+        Create Session  alias= Inserir solicitação de aproveitamento em análise   url=${HOST}
+        ${response}   POST On Session  alias= Inserir solicitação de aproveitamento em análise    url=/${ROUTE_INSERT_REQUEST}  json=${PAYLOAD_INSERT_REQUEST_CREDIT}  expected_status=200
+        Log   ${response.text}
+    ELSE
+        Log  ${response.text}
+    END
+
+Executo a higienização do bando de dados excluindo a requisição de aproveitamento
+    ${PAYLOAD}   Create Dictionary       email=${USER_STUDENT}  senha=${USER_PASSWORD}    
+    Create Session  alias= REALIZA LOGIN   url=${HOST}
+    ${response}   POST On Session    alias= REALIZA LOGIN   url=/${ROUTE_LOGIN}    json=${PAYLOAD}
+    Should Be Equal As Numbers    ${response.status_code}    200
+    ${TOKEN}=     Set Variable  ${response.text}   
+    ${TOKEN}=  Fetch From Right   ${TOKEN}  :
+    ${TOKEN}=  Remove String   ${TOKEN}  "    
+    ${TOKEN}=  Remove String   ${TOKEN}  ]
+    ${TOKEN}=  Remove String   ${TOKEN}  }
+    ${TOKEN}=  Remove String   ${TOKEN}  \n
+    ${TOKEN}=  Strip String   ${TOKEN}
+    
+    ${enroll_student}=  Set Variable   ${ENROLL_STUDENT}
+    ${headers}=    Create Dictionary    Authorization=Bearer ${TOKEN}
+    Create Session  alias= PEGA ID REQUISIÇÃO   url=${HOST}
+    ${response}   GET On Session  alias= PEGA ID REQUISIÇÃO   url=/${ROUTE_ID_REQUEST_CREDIT_APPROVED}/${ENROLL_STUDENT}  headers=${headers}  expected_status=200
+    ${result}=   Run Keyword And Return Status  Should Contain  ${response.text}    ${enroll_student}
+    IF   ${result}
+        Log  Não foi localizada nenhuma requisição de estágio
+    ELSE
+        ${REQUEST_ID}=  Set Variable  ${response.text}   
+        ${REQUEST_ID}=  Fetch From Right   ${REQUEST_ID}  :
+        ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  "    
+        ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  ]
+        ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  }
+        ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  \n
+        ${REQUEST_ID}=  Strip String   ${REQUEST_ID}
+        
+        Create Session  alias= DELETA DOCUMENTOS   url=${HOST}
+        ${response}   DELETE On Session   alias= DELETA DOCUMENTOS   url=/${ROUTE_DELETE_DOCS}/${REQUEST_ID}   headers=${headers}   expected_status=200
+        Log  ${response.text}
+
+        Create Session  alias= DELETA HISTÓRICO DA SOLICITAÇÃO   url=${HOST}
+        ${response}   DELETE On Session   alias= DELETA HISTÓRICO DA SOLICITAÇÃO   url=/${ROUTE_DELETE_HISTORY_REQUEST}/${REQUEST_ID}  headers=${headers}  expected_status=200
+        Log  ${response.text}
+
+        Create Session  alias= DELETA REGISTRO TABELA ESTAGIARIOS  url=${HOST}
+        ${response}   DELETE On Session   alias= DELETA REGISTRO TABELA ESTAGIARIOS   url=/${ROUTE_DELETE_INTERNS}/${REQUEST_ID}  headers=${headers}  expected_status=200
+        Log  ${response.text}
+
+        Create Session  alias= DELETA SOLICITAÇÃO DE ESTAGIO  url=${HOST}
+        ${response}   DELETE On Session   alias= DELETA SOLICITAÇÃO DE ESTAGIO   url=/${ROUTE_DELETE_REQUEST}/${REQUEST_ID}  headers=${headers}  expected_status=200
+        Log  ${response.text}
+
+    END
+
+Executo a higienização do bando de dados excluindo a requisição aprovada
+
+    ${PAYLOAD}   Create Dictionary       email=${USER_STUDENT}  senha=${USER_PASSWORD}    
+    Create Session  alias= REALIZA LOGIN   url=${HOST}
+    ${response}   POST On Session    alias= REALIZA LOGIN   url=/${ROUTE_LOGIN}    json=${PAYLOAD}
+    Should Be Equal As Numbers    ${response.status_code}    200
+    ${TOKEN}=     Set Variable  ${response.text}   
+    ${TOKEN}=  Fetch From Right   ${TOKEN}  :
+    ${TOKEN}=  Remove String   ${TOKEN}  "    
+    ${TOKEN}=  Remove String   ${TOKEN}  ]
+    ${TOKEN}=  Remove String   ${TOKEN}  }
+    ${TOKEN}=  Remove String   ${TOKEN}  \n
+    ${TOKEN}=  Strip String   ${TOKEN}
+    
+    ${enroll_student}=  Set Variable   ${ENROLL_STUDENT}
+    ${headers}=    Create Dictionary    Authorization=Bearer ${TOKEN}
+    Create Session  alias= PEGA ID REQUISIÇÃO   url=${HOST}
+    ${response}   GET On Session  alias= PEGA ID REQUISIÇÃO   url=/${ROUTE_ID_REQUEST_APPROVED_NOT_REPORT}/${ENROLL_STUDENT}  headers=${headers}  expected_status=200
+    ${result}=   Run Keyword And Return Status  Should Contain  ${response.text}    ${enroll_student}
+    IF   ${result}
+        Log  Não foi localizada nenhuma requisição de estágio
+    ELSE
+        ${REQUEST_ID}=  Set Variable  ${response.text}   
+        ${REQUEST_ID}=  Fetch From Right   ${REQUEST_ID}  :
+        ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  "    
+        ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  ]
+        ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  }
+        ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  \n
+        ${REQUEST_ID}=  Strip String   ${REQUEST_ID}
+        
+        Create Session  alias= DELETA DOCUMENTOS   url=${HOST}
+        ${response}   DELETE On Session   alias= DELETA DOCUMENTOS   url=/${ROUTE_DELETE_DOCS}/${REQUEST_ID}   headers=${headers}   expected_status=200
+        Log  ${response.text}
+
+        Create Session  alias= DELETA HISTÓRICO DA SOLICITAÇÃO   url=${HOST}
+        ${response}   DELETE On Session   alias= DELETA HISTÓRICO DA SOLICITAÇÃO   url=/${ROUTE_DELETE_HISTORY_REQUEST}/${REQUEST_ID}  headers=${headers}  expected_status=200
+        Log  ${response.text}
+
+        Create Session  alias= DELETA REGISTRO TABELA ESTAGIARIOS  url=${HOST}
+        ${response}   DELETE On Session   alias= DELETA REGISTRO TABELA ESTAGIARIOS   url=/${ROUTE_DELETE_INTERNS}/${REQUEST_ID}  headers=${headers}  expected_status=200
+        Log  ${response.text}
+
+        Create Session  alias= DELETA SOLICITAÇÃO DE ESTAGIO  url=${HOST}
+        ${response}   DELETE On Session   alias= DELETA SOLICITAÇÃO DE ESTAGIO   url=/${ROUTE_DELETE_REQUEST}/${REQUEST_ID}  headers=${headers}  expected_status=200
+        Log  ${response.text}
+    END
+
+Executo a higienização do bando de dados excluindo a requisição não obrigatória aprovada
+
+    ${PAYLOAD}   Create Dictionary       email=${USER_STUDENT}  senha=${USER_PASSWORD}    
+    Create Session  alias= REALIZA LOGIN   url=${HOST}
+    ${response}   POST On Session    alias= REALIZA LOGIN   url=/${ROUTE_LOGIN}    json=${PAYLOAD}
+    Should Be Equal As Numbers    ${response.status_code}    200
+    ${TOKEN}=     Set Variable  ${response.text}   
+    ${TOKEN}=  Fetch From Right   ${TOKEN}  :
+    ${TOKEN}=  Remove String   ${TOKEN}  "    
+    ${TOKEN}=  Remove String   ${TOKEN}  ]
+    ${TOKEN}=  Remove String   ${TOKEN}  }
+    ${TOKEN}=  Remove String   ${TOKEN}  \n
+    ${TOKEN}=  Strip String   ${TOKEN}
+    
+    ${enroll_student}=  Set Variable   ${ENROLL_STUDENT}
+    ${headers}=    Create Dictionary    Authorization=Bearer ${TOKEN}
+    Create Session  alias= PEGA ID REQUISIÇÃO   url=${HOST}
+    ${response}   GET On Session  alias= PEGA ID REQUISIÇÃO   url=/${ROUTE_ID_REQUEST_NOT_MANDATORY_APPROVED}/${ENROLL_STUDENT}  headers=${headers}  expected_status=200
+    ${result}=   Run Keyword And Return Status  Should Contain  ${response.text}    ${enroll_student}
+    IF   ${result}
+        Log  Não foi localizada nenhuma requisição de estágio
+    ELSE
+        ${REQUEST_ID}=  Set Variable  ${response.text}   
+        ${REQUEST_ID}=  Fetch From Right   ${REQUEST_ID}  :
+        ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  "    
+        ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  ]
+        ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  }
+        ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  \n
+        ${REQUEST_ID}=  Strip String   ${REQUEST_ID}
+        
+        Create Session  alias= DELETA DOCUMENTOS   url=${HOST}
+        ${response}   DELETE On Session   alias= DELETA DOCUMENTOS   url=/${ROUTE_DELETE_DOCS}/${REQUEST_ID}   headers=${headers}   expected_status=200
+        Log  ${response.text}
+
+        Create Session  alias= DELETA HISTÓRICO DA SOLICITAÇÃO   url=${HOST}
+        ${response}   DELETE On Session   alias= DELETA HISTÓRICO DA SOLICITAÇÃO   url=/${ROUTE_DELETE_HISTORY_REQUEST}/${REQUEST_ID}  headers=${headers}  expected_status=200
+        Log  ${response.text}
+
+        Create Session  alias= DELETA REGISTRO TABELA ESTAGIARIOS  url=${HOST}
+        ${response}   DELETE On Session   alias= DELETA REGISTRO TABELA ESTAGIARIOS   url=/${ROUTE_DELETE_INTERNS}/${REQUEST_ID}  headers=${headers}  expected_status=200
+        Log  ${response.text}
+
+        Create Session  alias= DELETA SOLICITAÇÃO DE ESTAGIO  url=${HOST}
+        ${response}   DELETE On Session   alias= DELETA SOLICITAÇÃO DE ESTAGIO   url=/${ROUTE_DELETE_REQUEST}/${REQUEST_ID}  headers=${headers}  expected_status=200
+        Log  ${response.text}
+    END    
+
+Verifico se existe requisição de estágio apto para cancelamento pelo diretor
+    ${PAYLOAD}         Create Dictionary       email=${USER_STUDENT}  senha=${USER_PASSWORD}    
+    Create Session  alias= REALIZA LOGIN   url=${HOST}
+    ${response}   POST On Session    alias= REALIZA LOGIN   url=/${ROUTE_LOGIN}    json=${PAYLOAD}
+    Should Be Equal As Numbers    ${response.status_code}    200
+    ${TOKEN}=     Set Variable  ${response.text}   
+    ${TOKEN}=  Fetch From Right   ${TOKEN}  :
+    ${TOKEN}=  Remove String   ${TOKEN}  "    
+    ${TOKEN}=  Remove String   ${TOKEN}  ]
+    ${TOKEN}=  Remove String   ${TOKEN}  }
+    ${TOKEN}=  Remove String   ${TOKEN}  \n
+    ${TOKEN}=  Strip String   ${TOKEN}    
+    ${headers}=    Create Dictionary    Authorization=Bearer ${TOKEN}
+
+    Create Session  alias= Verifico se existe requisição de estágio apto para cancelamento  url=${HOST}
+    ${response}   GET On Session  alias= Verifico se existe requisição de estágio apto para cancelamento  url=/${ROUTE_ID_REQUEST_APPROVED_NO_REPORT_DELIVERED}/${ENROLL_STUDENT}  headers=${headers}  expected_status=200
+    Log To Console   ${response.text}
+    ${result}=   Run Keyword And Return Status  Should Contain  ${response.text}    ${ENROLL_STUDENT}
+    IF   ${result}
+        Create Session  alias= Inserir solicitação de cancelamento em análise   url=${HOST}
+        ${response}   POST On Session  alias= Inserir solicitação de cancelamento em análise    url=/${ROUTE_INSERT_REQUEST}  json=${PAYLOAD_INSERT_REQUEST_CANCELATTION_DIRECTOR}  expected_status=200
+        Log   ${response.text}
+    ELSE
+        ${REQUEST_ID}=  Set Variable  ${response.text}   
+        ${REQUEST_ID}=  Fetch From Right   ${REQUEST_ID}  :
+        ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  "    
+        ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  ]
+        ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  }
+        ${REQUEST_ID}=  Remove String   ${REQUEST_ID}  \n
+        ${REQUEST_ID}=  Strip String   ${REQUEST_ID}
+
+        Create Session  alias= Altera status da solicitação de cancelamento para Em análise   url=${HOST}
+            ${response}   PUT On Session   alias= Altera status da solicitação de cancelamento para Em análise   url=/${ROUTE_UPDATE_REQUEST_CANCELLATION_DIRECTOR}/${REQUEST_ID}   headers=${headers}   expected_status=200
+            ${result}=   Run Keyword And Return Status  Should Contain  ${response.text}    ${REQUEST_ID} 
+            IF   ${result}
+                Log  ${response.text} 
+            ELSE
+                Log  ${response.text}    
+            END
+        
+    END
+
+Verifico o status da requisição de estágio não obrigatório para "${DEFERMENT_USER}"
+    ${director_deferral}=   Run Keyword And Return Status  Should Be Equal     ${DEFERMENT_USER}    diretor
+
+    ${PAYLOAD}         Create Dictionary       email=${USER_STUDENT}  senha=${USER_PASSWORD}    
+    Create Session  alias= REALIZA LOGIN   url=${HOST}
+    ${response}   POST On Session    alias= REALIZA LOGIN   url=/${ROUTE_LOGIN}    json=${PAYLOAD}
+    Should Be Equal As Numbers    ${response.status_code}    200
+    ${TOKEN}=     Set Variable  ${response.text}   
+    ${TOKEN}=  Fetch From Right   ${TOKEN}  :
+    ${TOKEN}=  Remove String   ${TOKEN}  "    
+    ${TOKEN}=  Remove String   ${TOKEN}  ]
+    ${TOKEN}=  Remove String   ${TOKEN}  }
+    ${TOKEN}=  Remove String   ${TOKEN}  \n
+    ${TOKEN}=  Strip String   ${TOKEN}    
+    ${headers}=    Create Dictionary    Authorization=Bearer ${TOKEN}
+    
+    IF  ${director_deferral}
+        Create Session  alias= Verifica se existe requisição de estágio não obrigatório em análise  url=${HOST}
+        ${response}   GET On Session  alias= Verifica se existe requisição de estágio não obrigatório em análise  url=/${ROUTE_ID_REQUEST_NOT_MANDATORY_ANALYSIS_DIRECTOR}/${ENROLL_STUDENT}  headers=${headers}  expected_status=200
+        ${result}=   Run Keyword And Return Status  Should Contain  ${response.text}    ${ENROLL_STUDENT}
+        IF   ${result}
+            Create Session  alias= Inserir solicitação de estágio não obrigatório em análise   url=${HOST}
+            ${response}   POST On Session  alias= Inserir solicitação de estágio não obrigatório em análise    url=/${ROUTE_INSERT_REQUEST}  json=${PAYLOAD_ID_REQUEST_NOT_MANDATORY_ANALYSIS_DIRECTOR}  expected_status=200
+            Log   ${response.text}
+        END
+    END
+    
