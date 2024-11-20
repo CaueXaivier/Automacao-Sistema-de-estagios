@@ -27,5 +27,6 @@ Test Case 03: Realizo o deferimento da solicitação de estágio
 Test Case 04: confirmo se a solicitação de está deferida 
     Realizo o login como "aluno"
     Valido se a solicitação de estágio consta como aprovada
+    Executo a higienização do bando de dados excluindo a requisição aprovada
 
     
