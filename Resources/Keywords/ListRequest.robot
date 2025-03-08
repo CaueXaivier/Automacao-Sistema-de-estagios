@@ -10,7 +10,7 @@ Library    SeleniumLibrary
 
 Clico em ir para solicitações de estágio
     Click Element   ${loc_list_requests_internship}
-    Wait Until Element Is Visible    ${loc_type_intertnship_request}   45
+    Wait Until Element Is Visible    ${loc_type_intertnship_request}   10
 
 Valido se a lista é corretamente carregada
     Click Element   ${loc_filter_name}
@@ -89,17 +89,17 @@ Valido se a solicitação de estágio consta como indeferida
 Clico em ir para solicitações de relatório
     Wait Until Element Is Visible   ${loc_list_requests_report}
     Click Element   ${loc_list_requests_report}
-    Wait Until Element Is Visible    ${loc_type_intertnship_request}   45
+    Wait Until Element Is Visible    ${loc_type_intertnship_request}  10
 
 Clico em ir para solicitações de renovação
     Wait Until Element Is Visible   ${loc_list_requests_renewals}
     Click Element   ${loc_list_requests_renewals}
-    Wait Until Element Is Visible    ${loc_type_intertnship_request}   45
+    Wait Until Element Is Visible    ${loc_type_intertnship_request}   10
 
 Clico em ir para solicitações de cancelamento
     Wait Until Element Is Visible   ${loc_list_requests_cancellation}
     Click Element   ${loc_list_requests_cancellation}
-    Wait Until Element Is Visible    ${loc_type_intertnship_request}   45
+    Wait Until Element Is Visible    ${loc_type_intertnship_request}   10
 
 
 

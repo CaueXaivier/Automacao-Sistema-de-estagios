@@ -12,8 +12,8 @@ ${FILE_PATH}        ${EXECDIR}/Resources/TestData/Docs/tce.pdf
 ***Keywords***
 
 Valido se o formulário é corretamente apresentado
-    Wait Until Element Is Visible   ${loc_title_form}   45
-    Wait Until Element Is Visible   ${loc_observation_student}   45
+    Wait Until Element Is Visible   ${loc_title_form}   10
+    Wait Until Element Is Visible   ${loc_observation_student}   10
     Page Should Contain Element   ${loc_type_internship}
     Page Should Contain Element   ${loc_name_enterprise}
     Page Should Contain Element   ${loc_end_internship}

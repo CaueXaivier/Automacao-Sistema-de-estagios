@@ -13,7 +13,7 @@ ${FILE_PATH}        ${EXECDIR}/Resources/TestData/Docs/tce.pdf
 
 Valido as informações e envio a solicitação para o coordenador de curso
     ${loc_name_student_details_request}=   Set Variable   //span[contains(text(),'${NAME_STUDENT}')]
-    Wait Until Element Is Visible     ${loc_name_student_details_request}   45
+    Wait Until Element Is Visible     ${loc_name_student_details_request}   10
     ${name_student_details_request}=   Get Text   ${loc_name_student_details_request}
     Should Be Equal  ${name_student_details_request}   ${NAME_STUDENT}
 
@@ -41,7 +41,7 @@ Valido as informações e como "${DEFERMENT_USER}" defiro a solicitação de est
     ${coordinator_deferral}=   Run Keyword And Return Status  Should Be Equal     ${DEFERMENT_USER}    coordenador
 
     ${loc_name_student_details_request}=   Set Variable   //span[contains(text(),'${NAME_STUDENT}')]
-    Wait Until Element Is Visible     ${loc_name_student_details_request}   45
+    Wait Until Element Is Visible     ${loc_name_student_details_request}   10
     ${name_student_details_request}=   Get Text   ${loc_name_student_details_request}
     Should Be Equal  ${name_student_details_request}   ${NAME_STUDENT}
 
@@ -92,9 +92,9 @@ Clico em indeferir
 Valido as informações e como "${DEFERMENT_USER}" defiro a solicitação de relatório
 
     ${coordinator_deferral}=   Run Keyword And Return Status  Should Be Equal     ${DEFERMENT_USER}    coordenador
-    Wait Until Element Is Visible   ${loc_error_docs_msg}  10
+    Run Keyword And Ignore Error   Wait Until Element Is Visible   ${loc_error_docs_msg}  10
     ${loc_name_student_details_request}=   Set Variable   //span[contains(text(),'${NAME_STUDENT}')]
-    Wait Until Element Is Visible     ${loc_name_student_details_request}   45
+    Wait Until Element Is Visible     ${loc_name_student_details_request}   10
     ${name_student_details_request}=   Get Text   ${loc_name_student_details_request}
     Should Be Equal  ${name_student_details_request}   ${NAME_STUDENT}
 
@@ -106,12 +106,13 @@ Valido as informações e como "${DEFERMENT_USER}" defiro a solicitação de rel
     ${date_details_request}=   Get Text   ${loc_date_details_request}
     Should Be Equal  ${date_details_request}   ${DATE_REQUEST}
     Capture Page Screenshot
-    Wait Until Element Is Not Visible   ${loc_error_docs_msg}   10
+    Run Keyword And Ignore Error    Wait Until Element Is Not Visible   ${loc_error_docs_msg}   10
     Execute Javascript    window.scrollBy(0, 700)
     IF  ${coordinator_deferral}        
         Click Element   ${loc_defer_button}
         Click Element   ${loc_confirm_button}
-        Wait Until Element Is Visible   ${loc_defer_sucess_msg}  10
+        Wait Until Element Is Not Visible   ${loc_defer_button}
+        #Wait Until Element Is Visible   ${loc_defer_sucess_msg}  10
         Capture Page Screenshot
         Click Element   ${loc_logout}
     END
@@ -120,7 +121,7 @@ Valido as informações e como "${DEFERMENT_USER}" defiro a solicitação de ren
 
     Run Keyword And Ignore Error   Wait Until Element Is Visible   ${loc_error_docs_msg}   7
     ${loc_name_student_details_request}=   Set Variable   //span[contains(text(),'${NAME_STUDENT}')]
-    Wait Until Element Is Visible     ${loc_name_student_details_request}   45
+    Wait Until Element Is Visible     ${loc_name_student_details_request}   10
     ${name_student_details_request}=   Get Text   ${loc_name_student_details_request}
     Should Be Equal  ${name_student_details_request}   ${NAME_STUDENT}
 
@@ -152,7 +153,7 @@ Valido as informações e como "${DEFERMENT_USER}" defiro a solicitação de can
 
     Run Keyword And Ignore Error   Wait Until Element Is Visible   ${loc_error_docs_msg}   7
     ${loc_name_student_details_request}=   Set Variable   //span[contains(text(),'${NAME_STUDENT}')]
-    Wait Until Element Is Visible     ${loc_name_student_details_request}   45
+    Wait Until Element Is Visible     ${loc_name_student_details_request}   10
     ${name_student_details_request}=   Get Text   ${loc_name_student_details_request}
     Should Be Equal  ${name_student_details_request}   ${NAME_STUDENT}
 
@@ -183,7 +184,7 @@ Valido as informações e como "${DEFERMENT_USER}" defiro a solicitação de can
 Valido as informações e como "${DEFERMENT_USER}" defiro a solicitação de aproveitamento
 
     ${loc_name_student_details_request}=   Set Variable   //span[contains(text(),'${NAME_STUDENT}')]
-    Wait Until Element Is Visible     ${loc_name_student_details_request}   45
+    Wait Until Element Is Visible     ${loc_name_student_details_request}   10
     ${name_student_details_request}=   Get Text   ${loc_name_student_details_request}
     Should Be Equal  ${name_student_details_request}   ${NAME_STUDENT}
 

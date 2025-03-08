@@ -27,7 +27,7 @@ Test Case 02: Acessa a página de gerenciamento de usuários
 Test Case 03: Visualizo a listagem de servidores
     Clico em mostrar histórico de servidores
 
-Test Case 03: Visualizo o histórico de servidores
+Test Case 04: Visualizo o histórico de servidores
     Valido se é apresentado o histórico de servidores
 
 

@@ -72,21 +72,21 @@ Acesso a home page
 Realizo o login
     Create Session  alias=deleta_docs   url=${HOST}
     ${response}   GET On Session  alias=deleta_docs  url=/${ROUTE}/${REQUEST_ID_DOCS}   expected_status=200    
-    Wait Until Element Is Visible    ${loc_email_field}    45
+    Wait Until Element Is Visible    ${loc_email_field}    10
     Input Text                       ${loc_email_field}       ${USER_STUDENT}
     Input Text                       ${loc_password_field}    ${USER_PASSWORD}
     Click Element                    ${loc_enter_button}
     Wait Until Page Does Not Contain Element   ${loc_email_field}  15
 
 Valido se a Home é corretamente apresentada
-    Wait Until Element Is Visible    ${loc_welcome}    45
-    Element Should Be Visible    ${loc_logout}    45
+    Wait Until Element Is Visible    ${loc_welcome}    10
+    Element Should Be Visible    ${loc_logout}    10
     Element Should Be Visible     ${loc_new_request}  
     Capture Page Screenshot
 
 
 Valido se as opções da Home são corretamente apresentadas
-    Wait Until Element Is Visible    ${loc_welcome}    45
+    Wait Until Element Is Visible    ${loc_welcome}    10
     Element Should Be Visible    ${loc_logout} 
     Page Should Contain Element   ${loc_list_requests_internship}
     Page Should Contain Element     ${loc_list_requests_internship} 
@@ -96,14 +96,14 @@ Valido se as opções da Home são corretamente apresentadas
     Capture Page Screenshot
 
 Realizo o login como coordendor do curso 
-    Wait Until Element Is Visible    ${loc_email_field}    45
+    Wait Until Element Is Visible    ${loc_email_field}    10
     Input Text                       ${loc_email_field}       ${USER_SERVER}
     Input Text                       ${loc_password_field}    ${USER_PASSWORD}
     Click Element                    ${loc_enter_button}
     Wait Until Page Does Not Contain Element   ${loc_email_field}  15
 
 Realizo o login como "${TYPE_USER}"
-    Wait Until Element Is Visible    ${loc_email_field}    45
+    Wait Until Element Is Visible    ${loc_email_field}    10
     ${type_user_student}=   Run Keyword And Return Status  Should Be Equal     ${TYPE_USER}    aluno
     ${type_user_server}=   Run Keyword And Return Status  Should Be Equal     ${TYPE_USER}    servidor 
     ${type_user_coordinator}=   Run Keyword And Return Status  Should Be Equal     ${TYPE_USER}    coordenador 
